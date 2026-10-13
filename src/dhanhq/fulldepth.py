@@ -139,6 +139,8 @@ class FullDepth:
                 await self.ws.send(json.dumps(disconnect_message))
                 header_message = self.create_header(feed_request_code=12, message_length=83, client_id=self.client_id)
                 await self.ws.send(header_message)
+            except websockets.ConnectionClosed:
+                pass  # The server may close after the first disconnect message.
             finally:
                 await self.ws.close()
                 self.ws = None
